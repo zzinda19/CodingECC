@@ -1,0 +1,41 @@
+﻿@model CodingECC.ViewModels.MainViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Diffie-Hellman Key Exchange Over An Elliptic Curve</h3>
+<h5>Elliptic Curve: y<sup>2</sup> = x<sup>3</sup> + 5x + 2</h5>
+<h5>Field: <b>F</b><sub>7</sub></h5>
+<h5>Basepoint G: [4, 4, 1]</h5>
+
+<hr>
+
+@using (Html.BeginForm("Calculate", "Main"))
+{
+    @Html.ValidationSummary(true, "Please fix the following errors.")
+    <div class="form-group">
+        @Html.LabelFor(m => m.LittleA)
+        @Html.TextBoxFor(m => m.LittleA, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.LittleA)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LittleB)
+        @Html.TextBoxFor(m => m.LittleB, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.LittleB)
+    </div>
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Calculate</button>
+}
+
+    <div>
+        <br />
+        <h6>A = aG = [@Model.BigA.X, @Model.BigA.Y, @Model.BigA.Z]</h6>
+        <h6>B = bG = [@Model.BigB.X, @Model.BigB.Y, @Model.BigB.Z]</h6>
+        <h6>M1 = bA = baG = [@Model.BigM1.X, @Model.BigM1.Y, @Model.BigM1.Z]</h6>
+        <h6>M2 = aB = abG = [@Model.BigM2.X, @Model.BigM2.Y, @Model.BigM2.Z]</h6>
+    </div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
