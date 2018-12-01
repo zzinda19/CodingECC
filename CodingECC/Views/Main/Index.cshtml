@@ -1,41 +1,34 @@
-﻿@model CodingECC.ViewModels.MainViewModel
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Diffie-Hellman Key Exchange Over An Elliptic Curve</h3>
-<h5>Elliptic Curve: y<sup>2</sup> = x<sup>3</sup> + 5x + 2</h5>
-<h5>Field: <b>F</b><sub>7</sub></h5>
-<h5>Basepoint G: [4, 4, 1]</h5>
-
-<hr>
-
-@using (Html.BeginForm("Calculate", "Main"))
-{
-    @Html.ValidationSummary(true, "Please fix the following errors.")
+<h3>Coding ECC</h3>
+<h4>Diffie-Helman Key Exchange</h4>
+<h6>Elliptic Curve: y<sup>2</sup> = x<sup>3</sup> + <span id="curveLittleA">0</span>x + <span id="curveLittleB">0</span></h6>
+<h6>Field: <strong>F</strong><sub><span id="fieldPrimeP">0</span></sub></h6>
+<h6>Basepoint G: [<span id="basepointG">0, 0, 1</span>]</h6>
+<h6>|G| = <span id="basepointGOrder">0</span></h6>
+<hr />
+<h5>Enter Secret Keys:</h5>
+<form id="ECDH">
     <div class="form-group">
-        @Html.LabelFor(m => m.LittleA)
-        @Html.TextBoxFor(m => m.LittleA, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.LittleA)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.LittleB)
-        @Html.TextBoxFor(m => m.LittleB, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.LittleB)
-    </div>
-    @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-primary">Calculate</button>
-}
-
-    <div>
+        <label for="keyLittleA">a = Alice's Secret K:</label>
         <br />
-        <h6>A = aG = [@Model.BigA.X, @Model.BigA.Y, @Model.BigA.Z]</h6>
-        <h6>B = bG = [@Model.BigB.X, @Model.BigB.Y, @Model.BigB.Z]</h6>
-        <h6>M1 = bA = baG = [@Model.BigM1.X, @Model.BigM1.Y, @Model.BigM1.Z]</h6>
-        <h6>M2 = aB = abG = [@Model.BigM2.X, @Model.BigM2.Y, @Model.BigM2.Z]</h6>
+        <input id="keyLittleA" name="keyLittleA" class="form-control" required type="number" min="1" value="1"/>
     </div>
+    <div class="form-group">
+        <label for="keyLittleB">b = Bob's Secret K:</label>
+        <br />
+        <input id="keyLittleB" name="keyLittleB" class="form-control" required type="number" min="1" value="1"/>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Calculate</button>
+    </div>
+</form>
+
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/main")
 }

@@ -15,9 +15,9 @@ namespace CodingECC.Models
         [Required]
         public long LittleB { get; set; }
 
-        public const long CurveA = 5;
-        public const long CurveB = 2;
-        public const long PrimeP = 7;
-        public ECCPoint BasePoint = new ECCPoint(4, 4, 1);
+        public const long CurveA = 13;
+        public const long CurveB = -13;
+        public const long PrimeP = 560644739;
+        public ECCPoint BasePoint = new ECCPoint(1, 1, 1);
     }
 }
