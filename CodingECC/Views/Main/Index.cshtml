@@ -5,7 +5,7 @@
 
 <h3>Coding ECC</h3>
 <h4>Diffie-Helman Key Exchange</h4>
-<h6>Elliptic Curve: y<sup>2</sup> = x<sup>3</sup> + <span id="curveLittleA">0</span>x + <span id="curveLittleB">0</span></h6>
+<h6>Elliptic Curve: y<sup>2</sup> = x<sup>3</sup> <span id="curveLittleA">+ 0</span>x <span id="curveLittleB">+ 0</span></h6>
 <h6>Field: <strong>F</strong><sub><span id="fieldPrimeP">0</span></sub></h6>
 <h6>Basepoint G: [<span id="basepointG">0, 0, 1</span>]</h6>
 <h6>|G| = <span id="basepointGOrder">0</span></h6>
@@ -26,6 +26,11 @@
         <button class="btn btn-primary" type="submit">Calculate</button>
     </div>
 </form>
+<hr />
+<h6><span id="pointAG">aG = [0, 0, 1]</span></h6>
+<h6><span id="pointBG">bG = [0, 0, 1]</span></h6>
+<h6><span id="pointM1">M1 = [0, 0, 1]</span></h6>
+<h6><span id="pointM2">M2 = [0, 0, 1]</span></h6>
 
 @section scripts
 {

@@ -13,9 +13,11 @@ namespace CodingECC.Models
         [Required]
         public int KeyLittleB { get; set; }
 
-        public ECPoint AG { get; set; }
-        public ECPoint BG { get; set; }
-        public ECPoint M1 { get; set; }
-        public ECPoint M2 { get; set; }
+        public int Order { get; set; }
+
+        public string AG { get; set; }
+        public string BG { get; set; }
+        public string M1 { get; set; }
+        public string M2 { get; set; }
     }
 }

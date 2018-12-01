@@ -28,12 +28,11 @@ namespace CodingECC.Models
 
         public ECPoint Multiply(int numTimes, ECPoint P)
         {
-            if (numTimes == 1)
+            for (int i = 0; i < numTimes; i++)
             {
-                return P;
+                P = Summand(G, P);
             }
-            P = Summand(G, P);
-            return Multiply(numTimes - 1, P);
+            return P;
         }
 
         public ECPoint Summand(ECPoint P, ECPoint Q)
@@ -59,7 +58,7 @@ namespace CodingECC.Models
             }
 
             int x, y;
-            int m2 = (int)Math.Pow(m, 2);
+            int m2 = (int)BigInteger.ModPow(m, 2, Prime);
             x = m2 - Q.X - P.X;
             x = Modulo(x, Prime);
             y = -m * (x - P.X) - P.Y;
@@ -86,11 +85,6 @@ namespace CodingECC.Models
                 top = Modulo(top, Prime);
                 bottom = Q.X - P.X;
                 bottom = Modulo(bottom, Prime);
-            }
-
-            if (BigInteger.GreatestCommonDivisor(bottom, Prime) != 1)
-            {
-                return -1;
             }
 
             int bottomInverse = (int)BigInteger.ModPow(bottom, Prime - 2, Prime);

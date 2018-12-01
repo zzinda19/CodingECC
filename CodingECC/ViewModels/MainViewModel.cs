@@ -17,17 +17,5 @@ namespace CodingECC.ViewModels
         [Display(Name = "Choose b:")]
         public long LittleB { get; set; }
 
-        public ECCPoint BigA { get; set; }
-        public ECCPoint BigB { get; set; }
-        public ECCPoint BigM1 { get; set; }
-        public ECCPoint BigM2 { get; set; }
-
-        public MainViewModel()
-        {
-            BigA = new ECCPoint();
-            BigB = new ECCPoint();
-            BigM1 = new ECCPoint();
-            BigM2 = new ECCPoint();
-        }
     }
 }

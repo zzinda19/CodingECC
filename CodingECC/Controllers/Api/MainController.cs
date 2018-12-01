@@ -16,8 +16,6 @@ namespace CodingECC.Controllers.Api
         {
 
             ECCurve eCCurve = GetECCurve();
-            eCCurve.FindOrder();
-
             return Ok(eCCurve);
         }
 
@@ -34,10 +32,11 @@ namespace CodingECC.Controllers.Api
 
             int a = dHKeyModule.KeyLittleA;
             int b = dHKeyModule.KeyLittleB;
+            int o = eCCurve.Order;
             ECPoint G = eCCurve.G;
 
-            ECPoint aG = eCCurve.Multiply(a, G);
-            ECPoint bG = eCCurve.Multiply(b, G);
+            ECPoint aG = eCCurve.Multiply(a-1, G);
+            ECPoint bG = eCCurve.Multiply(b-1, G);
 
             ECPoint M1 = eCCurve.Multiply(b, aG);
             ECPoint M2 = eCCurve.Multiply(a, bG);
@@ -46,10 +45,11 @@ namespace CodingECC.Controllers.Api
             {
                 KeyLittleA = a,
                 KeyLittleB = b,
-                AG = aG,
-                BG = bG,
-                M1 = M1,
-                M2 = M2
+                Order = o,
+                AG = aG.ToString(),
+                BG = bG.ToString(),
+                M1 = M1.ToString(),
+                M2 = M2.ToString()
             };
 
             return Ok(dHKeyModule);
@@ -60,11 +60,13 @@ namespace CodingECC.Controllers.Api
         {
             ECCurve eCCurve = new ECCurve
             {
-                A = 5,
-                B = 2,
-                G = new ECPoint { X = 4, Y = 4, Z = 1 },
-                Prime = 7
+                A = 13,
+                B = -13,
+                G = new ECPoint { X = 1, Y = 1, Z = 1 },
+                Prime = 10007
             };
+
+            eCCurve.FindOrder();
 
             return eCCurve;
         }
