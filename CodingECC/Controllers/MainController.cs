@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CodingECC.Models;
-using CodingECC.ViewModels;
 
 namespace CodingECC.Controllers
 {
@@ -14,7 +13,6 @@ namespace CodingECC.Controllers
         // GET: Main
         public ActionResult Index()
         {
-            Console.Write("Printing");
             return View();
         }
     }

@@ -87,6 +87,11 @@ namespace CodingECC.Models
                 bottom = Modulo(bottom, Prime);
             }
 
+            if (BigInteger.GreatestCommonDivisor(bottom, Prime) != 1)
+            {
+                return -1;
+            }
+
             int bottomInverse = (int)BigInteger.ModPow(bottom, Prime - 2, Prime);
             int slope = top * bottomInverse;
             slope = Modulo(slope, Prime);
@@ -102,6 +107,60 @@ namespace CodingECC.Models
         public static int Modulo(int a, int n)
         {
             return (a % n + n) % n;
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+        // Validation Methods For User Input //
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+        public bool HasValidCoefficients()
+        {
+            int a3 = (int)Math.Pow(A, 3);
+            int b2 = (int)Math.Pow(B, 2);
+            return ((4 * a3) + (27 * b2)) != 0;
+        }
+
+        public bool HasPrime()
+        {
+            if (Prime < 5)
+            {
+                switch (Prime)
+                {
+                    case 2:
+                    case 3:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            if (Prime % 2 == 0 || Prime % 3 == 0)
+            {
+                return false;
+            }
+
+            int boundary = (int)Math.Floor(Math.Sqrt(Prime));
+
+            for (int i = 5; i <= boundary; i += 2)
+            {
+                if (Prime % i == 0)
+                {
+                    return false;
+                } 
+            }
+            return true;
+        }
+
+        public bool HasBasepointOnCurve()
+        {
+            int y2 = (int)BigInteger.ModPow(G.Y, 2, Prime);
+            int x3 = (int)BigInteger.ModPow(G.X, 3, Prime);
+            x3 += (A * G.X) + B;
+            x3 = Modulo(x3, Prime);
+            return y2 == x3;
         }
     }
 }

@@ -12,6 +12,8 @@ namespace CodingECC.Models
         public int KeyLittleA { get; set; }
         [Required]
         public int KeyLittleB { get; set; }
+        [Required]
+        public ECCurve ECCurve { get; set; }
 
         public int Order { get; set; }
 

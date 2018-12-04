@@ -9,6 +9,7 @@
 <h6>Field: <strong>F</strong><sub><span id="fieldPrimeP">0</span></sub></h6>
 <h6>Basepoint G: [<span id="basepointG">0, 0, 1</span>]</h6>
 <h6>|G| = <span id="basepointGOrder">0</span></h6>
+<button id="editButton" class="btn btn-primary">Edit Curve</button>
 <hr />
 <h5>Enter Secret Keys:</h5>
 <form id="ECDH">
@@ -29,8 +30,40 @@
 <hr />
 <h6><span id="pointAG">aG = [0, 0, 1]</span></h6>
 <h6><span id="pointBG">bG = [0, 0, 1]</span></h6>
-<h6><span id="pointM1">M1 = [0, 0, 1]</span></h6>
-<h6><span id="pointM2">M2 = [0, 0, 1]</span></h6>
+<h6>M1 = baG = <span id="pointM1">[0, 0, 1]</span></h6>
+<h6>M2 = abG = <span id="pointM2">[0, 0, 1]</span></h6>
+
+<!--Edit Curve Form-->
+<div id="editCurveFormDiv" hidden>
+    <form id="editCurveForm">
+        <div class="form-group row">
+            <div class="col-xs-6">
+                <label for="formA">Coefficient 'a':</label>
+                <input class="form-control" id="formA" type="number" required>
+            </div>
+            <div class="col-xs-6">
+                <label for="formB">Coefficient 'b':</label>
+                <input class="form-control" id="formB" type="number" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-6">
+                <label for="formP">Field Prime 'p':</label>
+                <input class="form-control" id="formP" type="number" min="2" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-6">
+                <label for="formX">Basepoint 'x':</label>
+                <input class="form-control" id="formX" type="number" min="0" required>
+            </div>
+            <div class="col-xs-6">
+                <label for="formY">Basepoint 'y':</label>
+                <input class="form-control" id="formY" type="number" min="0" required>
+            </div>
+        </div>
+    </form>
+</div>
 
 @section scripts
 {

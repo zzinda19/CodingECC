@@ -1,10 +1,13 @@
 ﻿var MainViewModel = {
 
+    Curve: {},
+
     Initialize: function () {
         $.ajax({
-            url: "/Api/Main",
+            url: "/api/main/index",
             method: "GET",
             success: function (data) {
+                MainViewModel.Curve = data;
                 MainViewModel.PopulateCurveValues(data);
                 MainViewModel.SetKeyConstraints(data.order);
             },
@@ -37,7 +40,8 @@
     },
 
     SetKeyConstraints(order) {
-        $("input[type='number']").prop('max', order-1);
+        $("#keyLittleA").prop('max', order-1);
+        $("#keyLittleB").prop('max', order-1);
     }
 };
 
@@ -52,15 +56,15 @@ var CalculateButton = {
 
             var dHKeyModule = {
                 keyLittleA: keyLittleA,
-                keyLittleB: keyLittleB
+                keyLittleB: keyLittleB,
+                eCCurve: MainViewModel.Curve
             };
 
             $.ajax({
-                url: "/Api/Main/",
+                url: "/api/main/calculate",
                 method: "POST",
                 data: dHKeyModule,
                 success: function (data) {
-                    console.log("Success!");
                     Results.Initialize(data);
                 },
                 error: function (xhr) {
@@ -73,17 +77,86 @@ var CalculateButton = {
     }
 }
 
+var EditCurveModalForm = {
+    Dialog: {},
+    Initialize: function (form) {
+        this.Dialog = bootbox.dialog({
+            title: "Edit Curve Properties",
+            message: form,
+            buttons: {
+                cancel: {
+                    label: "Cancel",
+                    className: "btn btn-danger"
+                },
+                ok: {
+                    label: "Save",
+                    className: "btn btn-primary",
+                    callback: function () {
+                        EditCurveForm.Submit();
+                    }
+                }
+            }
+        });
+    }
+}
+
+var EditCurveButton = {
+    SetOnClickEventHandler: function () {
+        EditCurveForm.Initialize();
+        var editCurveButton = $("#editButton");
+        editCurveButton.click(function () {
+            $("#formA").val(MainViewModel.Curve.a);
+            $("#formB").val(MainViewModel.Curve.b);
+            $("#formP").val(MainViewModel.Curve.prime);
+            $("#formX").val(MainViewModel.Curve.g.x);
+            $("#formY").val(MainViewModel.Curve.g.y);
+            EditCurveModalForm.Initialize(EditCurveForm.Form);
+        });
+    }
+}
+
+var EditCurveForm = {
+    Form: {},
+    Initialize: function () {
+        this.Form = $("#editCurveForm");
+    },
+    Submit: function () {
+        var newCurve = {
+            a: $("#formA").val(),
+            b: $("#formB").val(),
+            g: {
+                x: $("#formX").val(),
+                y: $("#formY").val(),
+                z: 1
+            },
+            prime: $("#formP").val()
+        };
+        $.ajax({
+            url: "/api/main/update",
+            method: "POST",
+            data: newCurve,
+            success: function (data) {
+                MainViewModel.Curve = data;
+                MainViewModel.PopulateCurveValues(data);
+                MainViewModel.SetKeyConstraints(data.order);
+            },
+            error: function (xhr) {
+                toastr.error("An error occured: " + xhr.responseJSON.message);
+            }
+        });
+    }
+}
+
 var Results = {
     Initialize: function (dHKeyModule) {
-        console.log(dHKeyModule);
         a = dHKeyModule.keyLittleA;
         b = dHKeyModule.keyLittleB;
         o = dHKeyModule.order;
         ab = Modulo(a + b, o);
         $("#pointAG").text(a + "G = " + dHKeyModule.ag);
         $("#pointBG").text(b + "G = " + dHKeyModule.bg);
-        $("#pointM1").text("M1 = " + ab + "G = " + dHKeyModule.m1);
-        $("#pointM2").text("M2 = " + ab + "G = " + dHKeyModule.m2);
+        $("#pointM1").text(ab + "G = " + dHKeyModule.m1);
+        $("#pointM2").text(ab + "G = " + dHKeyModule.m2);
     }
 }
 
@@ -94,4 +167,5 @@ function Modulo(a, n) {
 $(document).ready(function () {
     MainViewModel.Initialize();
     CalculateButton.SetOnClickEventHandler();
+    EditCurveButton.SetOnClickEventHandler();
 });
